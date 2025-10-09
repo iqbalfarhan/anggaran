@@ -1,7 +1,8 @@
+import MarkdownReader from '@/components/markdown-reader';
 import { Badge } from '@/components/ui/badge';
-import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import AppLayout from '@/layouts/app-layout';
-import { formatRupiah } from '@/lib/utils';
+import { dateDFY, formatRupiah } from '@/lib/utils';
 import { Transaksi } from '@/types/transaksi';
 import { FC } from 'react';
 
@@ -15,8 +16,13 @@ const ShowTransaksi: FC<Props> = ({ transaksi }) => {
       <Card>
         <CardHeader>
           <CardTitle>{transaksi.name}</CardTitle>
-          <CardDescription>{transaksi.description}</CardDescription>
+          <CardDescription>Tanggal : {dateDFY(transaksi.date)}</CardDescription>
         </CardHeader>
+        <CardContent>
+          <div>
+            <MarkdownReader content={transaksi.description || '_Tidak ada deskripsi_'} className="prose-sm" />
+          </div>
+        </CardContent>
         <CardFooter className="flex items-center justify-between">
           <Badge>{transaksi.type}</Badge>
           <span>{formatRupiah(transaksi.price)}</span>
