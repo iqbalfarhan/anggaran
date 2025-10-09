@@ -200,7 +200,7 @@ const TransaksiList: FC<Props> = ({ transaksis }) => {
             return (
               <div className="space-y-4">
                 <p className="font-bold">{dayjs(date).format('dddd, DD MMMM YYYY')}</p>
-                <div className="grid-responsive grid gap-6">
+                <div className="grid-responsive grid gap-4">
                   {items
                     .filter((transaksi) => JSON.stringify(transaksi).toLowerCase().includes(cari.toLowerCase()))
                     .map((transaksi) => (
