@@ -67,7 +67,7 @@ class TransaksiController extends Controller
         $this->pass("show transaksi");
 
         return Inertia::render('transaksi/show', [
-            'transaksi' => $transaksi,
+            'transaksi' => $transaksi->load(['media']),
             'permissions' => [
                 'canUpdate' => $this->user->can("update transaksi"),
                 'canDelete' => $this->user->can("delete transaksi"),
