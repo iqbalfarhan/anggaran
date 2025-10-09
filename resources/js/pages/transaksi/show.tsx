@@ -25,7 +25,7 @@ const ShowTransaksi: FC<Props> = ({ transaksi }) => {
 
       <div className="masonry">
         {transaksi.media?.map((media) => (
-          <img key={media.id} src={media.preview_url} alt={media.name} className="w-full object-cover" />
+          <img key={media.id} src={media.original_url} alt={media.name} className="w-full object-cover" />
         ))}
       </div>
     </AppLayout>
