@@ -133,4 +133,9 @@ class TransaksiController extends Controller
         $data = $request->validated();
         $transaksi->addMedia($data['file'])->toMediaCollection();
     }
+
+    public function raw(Transaksi $transaksi)
+    {
+        return $transaksi->load(['media']);
+    }
 }

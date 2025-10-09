@@ -30,6 +30,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::apiResource('permission', PermissionController::class);
     Route::apiResource('doc', MediaController::class);
     
+    Route::get('transaksi/{transaksi}/raw', [TransaksiController::class, 'raw'])->name('transaksi.raw');
     Route::put('transaksi/bulk', [TransaksiController::class, 'bulkUpdate'])->name('transaksi.bulk.update');
     Route::delete('transaksi/bulk', [TransaksiController::class, 'bulkDelete'])->name('transaksi.bulk.destroy');
     Route::post('transaksi/{transaksi}/upload-media', [TransaksiController::class, 'uploadMedia'])->name('transaksi.upload-media');
