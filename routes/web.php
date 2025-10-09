@@ -8,6 +8,8 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\WelcomeController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use App\Http\Controllers\TransaksiController;
+
 
 Route::get('/', [WelcomeController::class, 'index'])->name('home');
 Route::get('/about', [WelcomeController::class, 'about'])->name('about');
@@ -27,6 +29,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('permission/resync', [PermissionController::class, 'resync'])->name('permission.resync');
     Route::apiResource('permission', PermissionController::class);
     Route::apiResource('doc', MediaController::class);
+    
+    Route::put('transaksi/bulk', [TransaksiController::class, 'bulkUpdate'])->name('transaksi.bulk.update');
+    Route::delete('transaksi/bulk', [TransaksiController::class, 'bulkDelete'])->name('transaksi.bulk.destroy');
+    Route::post('transaksi/{transaksi}/upload-media', [TransaksiController::class, 'uploadMedia'])->name('transaksi.upload-media');
+    Route::apiResource('transaksi', TransaksiController::class);
 });
 
 require __DIR__.'/settings.php';

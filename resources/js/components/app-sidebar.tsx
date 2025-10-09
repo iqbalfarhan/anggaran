@@ -13,11 +13,11 @@ const mainNavItems: NavItem[] = [
     href: route('dashboard'),
     icon: LayoutGrid,
   },
-  {
-    title: 'Documentation',
-    href: route('documentation'),
-    icon: BookOpen,
-  },
+  // {
+  //   title: 'Documentation',
+  //   href: route('documentation'),
+  //   icon: BookOpen,
+  // },
 ];
 
 const footerNavItems: NavItem[] = [];
@@ -50,6 +50,12 @@ export function AppSidebar() {
             //   icon: BookOpen,
             //   available: menus.feature,
             // },
+            {
+              title: 'Transaksi',
+              href: route('transaksi.index'),
+              icon: BookOpen,
+              available: menus.transaksi,
+            },
           ]}
           label="Dashboard"
         />

@@ -38,6 +38,7 @@ export interface SharedData {
   ziggy: Config & { location: string };
   sidebarOpen: boolean;
   permissions?: Record<string, boolean>;
+  counts?: Record<string, number>;
   viewMode: ViewMode;
   [key: string]: unknown;
 }

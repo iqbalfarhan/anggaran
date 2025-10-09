@@ -1,6 +1,7 @@
 import AppLayout from '@/layouts/app-layout';
 import { SharedData, type BreadcrumbItem } from '@/types';
 import { usePage } from '@inertiajs/react';
+import TransaksiStatWidget from '../transaksi/components/transaksi-stat-widget';
 import DateTimeWidget from './widget/date-time-widget';
 import UserInfoWidget from './widget/user-info-widget';
 
@@ -22,6 +23,7 @@ export default function Dashboard() {
         <UserInfoWidget />
         <DateTimeWidget />
       </div>
+      <TransaksiStatWidget />
     </AppLayout>
   );
 }
