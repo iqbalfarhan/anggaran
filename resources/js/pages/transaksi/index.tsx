@@ -115,16 +115,19 @@ const TransaksiList: FC<Props> = ({ transaksis }) => {
           </TableHeader>
           <TableBody>
             {Object.entries(grouped).map(([date, items]) => {
-              return (
-                <>
-                  <TableRow key={date} className="bg-muted/50">
-                    <TableCell colSpan={5} className="text-center opacity-50">
-                      {dayjs(date).format('dddd, DD MMMM YYYY')}
-                    </TableCell>
-                  </TableRow>
-                  {items
-                    .filter((transaksi) => JSON.stringify(transaksi).toLowerCase().includes(cari.toLowerCase()))
-                    .map((transaksi) => (
+              return (() => {
+                const filteredItems = items.filter((transaksi) =>
+                  JSON.stringify(transaksi).toLowerCase().includes(cari.toLowerCase())
+                );
+                const totalPerDay = filteredItems.reduce((sum, transaksi) => sum + (transaksi.price ?? 0), 0);
+                return (
+                  <>
+                    <TableRow key={date} className="bg-muted/50">
+                      <TableCell colSpan={5} className="text-center opacity-50">
+                        {dayjs(date).format('dddd, DD MMMM YYYY')}
+                      </TableCell>
+                    </TableRow>
+                    {filteredItems.map((transaksi) => (
                       <TableRow key={transaksi.id}>
                         <TableCell>
                           <Button variant={'ghost'} size={'icon'} asChild>
@@ -189,23 +192,36 @@ const TransaksiList: FC<Props> = ({ transaksis }) => {
                         </TableCell>
                       </TableRow>
                     ))}
-                </>
-              );
+                    {filteredItems.length > 0 && (
+                      <TableRow className="bg-muted/30">
+                        <TableCell colSpan={3} />
+                        <TableCell className="font-semibold">{formatRupiah(totalPerDay)}</TableCell>
+                        <TableCell className="text-center opacity-70">Total pengeluaran hari ini</TableCell>
+                      </TableRow>
+                    )}
+                  </>
+                );
+              })();
             })}
           </TableBody>
         </Table>
       ) : (
         <div className="space-y-10">
           {Object.entries(grouped).map(([date, items]) => {
+            const filteredItems = items.filter((transaksi) =>
+              JSON.stringify(transaksi).toLowerCase().includes(cari.toLowerCase())
+            );
+            const totalPerDay = filteredItems.reduce((sum, transaksi) => sum + (transaksi.price ?? 0), 0);
             return (
               <div className="space-y-4">
                 <p className="font-bold">{dayjs(date).format('dddd, DD MMMM YYYY')}</p>
+                {filteredItems.length > 0 && (
+                  <p className="text-sm opacity-70">Total pengeluaran: {formatRupiah(totalPerDay)}</p>
+                )}
                 <div className="grid-responsive grid gap-4">
-                  {items
-                    .filter((transaksi) => JSON.stringify(transaksi).toLowerCase().includes(cari.toLowerCase()))
-                    .map((transaksi) => (
-                      <TransaksiItemCard key={transaksi.id} transaksi={transaksi} />
-                    ))}
+                  {filteredItems.map((transaksi) => (
+                    <TransaksiItemCard key={transaksi.id} transaksi={transaksi} />
+                  ))}
                 </div>
               </div>
             );
