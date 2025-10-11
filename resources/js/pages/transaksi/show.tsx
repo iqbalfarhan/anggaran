@@ -1,20 +1,25 @@
 import MarkdownReader from '@/components/markdown-reader';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger } from '@/components/ui/context-menu';
 import AppLayout from '@/layouts/app-layout';
 import { dateDFY, em, formatRupiah, handlePasteScreenshot } from '@/lib/utils';
-import { Media } from '@/types';
+import { Media, SharedData } from '@/types';
 import { Transaksi } from '@/types/transaksi';
-import { router } from '@inertiajs/react';
+import { router, usePage } from '@inertiajs/react';
+import { Edit } from 'lucide-react';
 import { FC, useEffect } from 'react';
 import { toast } from 'sonner';
+import TransaksiFormSheet from './components/transaksi-form-sheet';
 
 type Props = {
   transaksi: Transaksi;
 };
 
 const ShowTransaksi: FC<Props> = ({ transaksi }) => {
+  const { permissions } = usePage<SharedData>().props;
+
   useEffect(() => {
     const cleanup = handlePasteScreenshot((file) => {
       router.post(
@@ -43,7 +48,21 @@ const ShowTransaksi: FC<Props> = ({ transaksi }) => {
   };
 
   return (
-    <AppLayout title="Detail Transaksi" description="Detail transaksi">
+    <AppLayout
+      title="Detail Transaksi"
+      description="Detail transaksi"
+      actions={
+        <>
+          {permissions?.canUpdate && (
+            <TransaksiFormSheet purpose="edit" transaksi={transaksi}>
+              <Button>
+                <Edit /> Edit transaksi
+              </Button>
+            </TransaksiFormSheet>
+          )}
+        </>
+      }
+    >
       <Card>
         <CardHeader>
           <CardTitle>{transaksi.name}</CardTitle>

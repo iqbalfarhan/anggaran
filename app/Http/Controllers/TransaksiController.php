@@ -42,6 +42,7 @@ class TransaksiController extends Controller
                 'canAdd' => $this->user->can('create transaksi'),
                 'canShow' => $this->user->can('show transaksi'),
                 'canUpdate' => $this->user->can('update transaksi'),
+                'canUpdateProject' => $this->user->can('update project'),
                 'canDelete' => $this->user->can('delete transaksi'),
             ],
         ]);

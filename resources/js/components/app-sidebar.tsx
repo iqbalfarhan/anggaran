@@ -4,7 +4,7 @@ import { NavUser } from '@/components/nav-user';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { type NavItem } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
-import { BookOpen, Database, Folder, KeySquare, LayoutGrid, Settings, Users } from 'lucide-react';
+import { Database, Folder, KeySquare, LayoutGrid, Settings, Users } from 'lucide-react';
 import AppLogo from './app-logo';
 
 const mainNavItems: NavItem[] = [
@@ -56,12 +56,12 @@ export function AppSidebar() {
               icon: Folder,
               available: menus.project,
             },
-            {
-              title: 'Transaksi',
-              href: route('transaksi.index'),
-              icon: BookOpen,
-              available: menus.transaksi,
-            },
+            // {
+            //   title: 'Transaksi',
+            //   href: route('transaksi.index'),
+            //   icon: BookOpen,
+            //   available: menus.transaksi,
+            // },
           ]}
           label="Dashboard"
         />

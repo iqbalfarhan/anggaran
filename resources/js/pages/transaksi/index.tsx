@@ -10,11 +10,13 @@ import { useViewMode } from '@/hooks/use-view-mode';
 import AppLayout from '@/layouts/app-layout';
 import { capitalizeWords, dateDFY, formatRupiah, groupBy, strLimit } from '@/lib/utils';
 import { SharedData } from '@/types';
+import { Project } from '@/types/project';
 import { Transaksi } from '@/types/transaksi';
 import { Link, usePage } from '@inertiajs/react';
 import dayjs from 'dayjs';
 import { Copy, Edit, Folder, Image, Plus, TableIcon, Trash2 } from 'lucide-react';
 import { FC, useState } from 'react';
+import ProjectFormSheet from '../project/components/project-form-sheet';
 import TransaksiBulkDeleteDialog from './components/transaksi-bulk-delete-dialog';
 import TransaksiBulkEditSheet from './components/transaksi-bulk-edit-sheet';
 import TransaksiDeleteDialog from './components/transaksi-delete-dialog';
@@ -25,10 +27,11 @@ import TransaksiUploadMediaSheet from './components/transaksi-upload-sheet';
 
 type Props = {
   transaksis: Transaksi[];
+  project: Project;
   query: { [key: string]: string };
 };
 
-const TransaksiList: FC<Props> = ({ transaksis }) => {
+const TransaksiList: FC<Props> = ({ transaksis, project }) => {
   const { mode, toggle } = useViewMode();
   const [ids, setIds] = useState<number[]>([]);
   const [cari, setCari] = useState('');
@@ -50,6 +53,13 @@ const TransaksiList: FC<Props> = ({ transaksis }) => {
                 Create new transaksi
               </Button>
             </TransaksiFormSheet>
+          )}
+          {permissions?.canUpdateProject && (
+            <ProjectFormSheet purpose="edit" project={project}>
+              <Button>
+                <Edit /> Edit project
+              </Button>
+            </ProjectFormSheet>
           )}
         </>
       }
