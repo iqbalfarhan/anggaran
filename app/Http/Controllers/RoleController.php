@@ -11,7 +11,6 @@ use Spatie\Permission\Models\Role;
 
 class RoleController extends Controller
 {
-
     /**
      * Display a listing of the resource.
      */
@@ -19,7 +18,7 @@ class RoleController extends Controller
     {
         $this->pass('index role');
 
-        $data = Role::query()->when($request->name, fn($q, $v) => $q->where('name', 'like', "%$v%"));
+        $data = Role::query()->when($request->name, fn ($q, $v) => $q->where('name', 'like', "%$v%"));
 
         return Inertia::render('role/index', [
             'roles' => $data->get()->each(function ($role) {
@@ -56,7 +55,7 @@ class RoleController extends Controller
                 'canEdit' => $this->user->can('edit role'),
                 'canAddPermission' => $this->user->can('create permission'),
                 'canResyncPermission' => $this->user->can('resync permission'),
-            ]
+            ],
         ]);
     }
 

@@ -19,20 +19,20 @@ class PermissionController extends Controller
         $this->pass('index permission');
 
         $data = Permission::query()
-            //->with(['media']).
-            ->when($request->name, function($q, $v) 
-                { $q->where('name', 'like', "%$v%");
+            // ->with(['media']).
+            ->when($request->name, function ($q, $v) {
+                $q->where('name', 'like', "%$v%");
             });
 
         return Inertia::render('permission/index', [
             'permits' => $data->orderBy('group')->get(),
             'query' => $request->input(),
             'permissions' => [
-                'canAdd' => $this->user->can("create permission"),
-                'canEdit' => $this->user->can("update permission"),
-                'canResync' => $this->user->can("resync permission"),
-                'canDelete' => $this->user->can("delete permission"),
-            ]
+                'canAdd' => $this->user->can('create permission'),
+                'canEdit' => $this->user->can('update permission'),
+                'canResync' => $this->user->can('resync permission'),
+                'canDelete' => $this->user->can('delete permission'),
+            ],
         ]);
     }
 

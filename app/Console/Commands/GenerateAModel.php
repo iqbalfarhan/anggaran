@@ -9,6 +9,7 @@ use Illuminate\Support\Str;
 class GenerateAModel extends Command
 {
     protected $signature = 'generate:amodel {name} {--s|softDelete} {--fields=} {--m|media}';
+
     protected $description = 'Generate model, factory, seeder, requests, and migration for a given name';
 
     public function handle(): int
@@ -42,38 +43,38 @@ class GenerateAModel extends Command
 
         // Base Laravel paths for generated artifacts
         $paths = [
-            "app/Models/{$Name}.php" => "resources/stubs/php-stubs/model.stub",
-            "database/factories/{$Name}Factory.php" => "resources/stubs/php-stubs/factory.stub",
-            "database/seeders/{$Name}Seeder.php" => "resources/stubs/php-stubs/seeder.stub",
-            "app/Http/Requests/Store{$Name}Request.php" => "resources/stubs/php-stubs/store-request.stub",
-            "app/Http/Requests/Update{$Name}Request.php" => "resources/stubs/php-stubs/update-request.stub",
-            "app/Http/Requests/BulkUpdate{$Name}Request.php" => "resources/stubs/php-stubs/bulk-update-request.stub",
-            "app/Http/Requests/BulkDelete{$Name}Request.php" => "resources/stubs/php-stubs/bulk-delete-request.stub",
-            "app/Http/Controllers/{$Name}Controller.php" => "resources/stubs/php-stubs/controller.stub",
+            "app/Models/{$Name}.php" => 'resources/stubs/php-stubs/model.stub',
+            "database/factories/{$Name}Factory.php" => 'resources/stubs/php-stubs/factory.stub',
+            "database/seeders/{$Name}Seeder.php" => 'resources/stubs/php-stubs/seeder.stub',
+            "app/Http/Requests/Store{$Name}Request.php" => 'resources/stubs/php-stubs/store-request.stub',
+            "app/Http/Requests/Update{$Name}Request.php" => 'resources/stubs/php-stubs/update-request.stub',
+            "app/Http/Requests/BulkUpdate{$Name}Request.php" => 'resources/stubs/php-stubs/bulk-update-request.stub',
+            "app/Http/Requests/BulkDelete{$Name}Request.php" => 'resources/stubs/php-stubs/bulk-delete-request.stub',
+            "app/Http/Controllers/{$Name}Controller.php" => 'resources/stubs/php-stubs/controller.stub',
         ];
 
         if ($withMedia) {
-            $paths["app/Http/Requests/Upload{$Name}MediaRequest.php"] = "resources/stubs/php-stubs/upload-request.stub";
+            $paths["app/Http/Requests/Upload{$Name}MediaRequest.php"] = 'resources/stubs/php-stubs/upload-request.stub';
         }
 
         foreach ($paths as $file => $stub) {
             $this->makeFromStub($file, $stub, [
-                '{{ name }}'  => $name,
-                '{{ Name }}'  => $Name,
+                '{{ name }}' => $name,
+                '{{ Name }}' => $Name,
                 '{{ names }}' => $names,
                 '{{ Names }}' => $Names,
                 '{{ table }}' => $tableName,
                 // soft delete
-                '{{ softDeleteImport }}' => $softDelete ? "use Illuminate\\Database\\Eloquent\\SoftDeletes;\n" : "",
-                '{{ softDeleteTrait }}'  => $softDelete ? "use SoftDeletes;\n" : "",
-                '{{ softDeleteMethods }}'  => $softDelete ? $this->generateSoftDeleteMethods($softDelete, $Name, $name, $names) : "",
+                '{{ softDeleteImport }}' => $softDelete ? "use Illuminate\\Database\\Eloquent\\SoftDeletes;\n" : '',
+                '{{ softDeleteTrait }}' => $softDelete ? "use SoftDeletes;\n" : '',
+                '{{ softDeleteMethods }}' => $softDelete ? $this->generateSoftDeleteMethods($softDelete, $Name, $name, $names) : '',
                 // has media
                 '{{ hasMediaImport }}' => $this->generateHasMediaImports($withMedia),
-                '{{ hasMediaTrait }}' => $withMedia ? "use InteractsWithMedia;\n" : "",
-                '{{ hasMediaMethods }}' => $withMedia ? $this->generateHasMediaMethods($withMedia) : "",
-                '{{ hasMediaImplement }}' => $withMedia ? "implements HasMedia" : "",
-                '{{ hasMediaControllerMethods }}' => $withMedia ? $this->generateHasMediaControllerMethods($withMedia, $name, $Name) : "",
-                '{{ hasMediaControllerMethodsImport }}' => $withMedia ? "use App\\Http\\Requests\\Upload{$Name}MediaRequest;\n" : "",
+                '{{ hasMediaTrait }}' => $withMedia ? "use InteractsWithMedia;\n" : '',
+                '{{ hasMediaMethods }}' => $withMedia ? $this->generateHasMediaMethods($withMedia) : '',
+                '{{ hasMediaImplement }}' => $withMedia ? 'implements HasMedia' : '',
+                '{{ hasMediaControllerMethods }}' => $withMedia ? $this->generateHasMediaControllerMethods($withMedia, $name, $Name) : '',
+                '{{ hasMediaControllerMethodsImport }}' => $withMedia ? "use App\\Http\\Requests\\Upload{$Name}MediaRequest;\n" : '',
                 // fillable, factory, request, migration
                 '{{ fillable }}' => $this->generateFillable($fields),
                 '{{ factory }}' => $this->generateFactory($fields),
@@ -84,14 +85,14 @@ class GenerateAModel extends Command
         }
 
         // Migration
-        $migrationName = date('Y_m_d_His') . "_create_{$tableName}_table.php";
+        $migrationName = date('Y_m_d_His')."_create_{$tableName}_table.php";
         $migrationPath = database_path("migrations/{$migrationName}");
-        $this->makeFromStub($migrationPath, "resources/stubs/php-stubs/migration.stub", [
-            '{{ name }}'  => $name,
-            '{{ Name }}'  => $Name,
+        $this->makeFromStub($migrationPath, 'resources/stubs/php-stubs/migration.stub', [
+            '{{ name }}' => $name,
+            '{{ Name }}' => $Name,
             '{{ Names }}' => $Names,
             '{{ table }}' => $tableName,
-            '{{ softDeleteColumn }}' => $softDelete ? "\$table->softDeletes();\n" : "",
+            '{{ softDeleteColumn }}' => $softDelete ? "\$table->softDeletes();\n" : '',
             '{{ migrationFields }}' => $this->generateMigrationFields($fields, $softDelete),
         ]);
 
@@ -109,14 +110,14 @@ class GenerateAModel extends Command
     protected function makeFromStub(string $filePath, string $stubPath, array $replacements): void
     {
         $dir = dirname($filePath);
-        if (!File::exists($dir)) {
+        if (! File::exists($dir)) {
             File::makeDirectory($dir, 0755, true);
             $this->info("📂 Created directory: {$dir}");
         }
 
-        if (!File::exists($filePath)) {
+        if (! File::exists($filePath)) {
             $stubFullPath = base_path($stubPath);
-            $content = File::exists($stubFullPath) ? File::get($stubFullPath) : "// Stub not found";
+            $content = File::exists($stubFullPath) ? File::get($stubFullPath) : '// Stub not found';
             $content = str_replace(array_keys($replacements), array_values($replacements), $content);
 
             File::put($filePath, $content);
@@ -130,37 +131,36 @@ class GenerateAModel extends Command
     {
         $webPath = base_path('routes/web.php');
 
-        $useLine   = "use App\\Http\\Controllers\\{$Name}Controller;\n";
-        $routeLine  = "    Route::put('" . Str::camel($name) . "/bulk', [{$Name}Controller::class, 'bulkUpdate'])->name('" . Str::camel($name) . ".bulk.update');\n";
-        $routeLine .= "    Route::delete('" . Str::camel($name) . "/bulk', [{$Name}Controller::class, 'bulkDelete'])->name('" . Str::camel($name) . ".bulk.destroy');\n";
+        $useLine = "use App\\Http\\Controllers\\{$Name}Controller;\n";
+        $routeLine = "    Route::put('".Str::camel($name)."/bulk', [{$Name}Controller::class, 'bulkUpdate'])->name('".Str::camel($name).".bulk.update');\n";
+        $routeLine .= "    Route::delete('".Str::camel($name)."/bulk', [{$Name}Controller::class, 'bulkDelete'])->name('".Str::camel($name).".bulk.destroy');\n";
 
         // Tambahin routes kalau pakai softDelete
         if ($softDelete) {
-            $routeLine .= "    Route::get('" . Str::camel($name) . "/archived', [{$Name}Controller::class, 'archived'])->name('" . Str::camel($name) . ".archived');\n";
-            $routeLine .= "    Route::put('" . Str::camel($name) . "/{" . Str::camel($name) . "}/restore', [{$Name}Controller::class, 'restore'])->name('" . Str::camel($name) . ".restore');\n";
-            $routeLine .= "    Route::delete('" . Str::camel($name) . "/{" . Str::camel($name) . "}/force-delete', [{$Name}Controller::class, 'forceDelete'])->name('" . Str::camel($name) . ".force-delete');\n";
-        }
-        
-        if($withMedia) {
-            $routeLine .= "    Route::post('" . Str::camel($name) . "/{" . Str::camel($name) . "}/upload-media', [{$Name}Controller::class, 'uploadMedia'])->name('" . Str::camel($name) . ".upload-media');\n";
+            $routeLine .= "    Route::get('".Str::camel($name)."/archived', [{$Name}Controller::class, 'archived'])->name('".Str::camel($name).".archived');\n";
+            $routeLine .= "    Route::put('".Str::camel($name).'/{'.Str::camel($name)."}/restore', [{$Name}Controller::class, 'restore'])->name('".Str::camel($name).".restore');\n";
+            $routeLine .= "    Route::delete('".Str::camel($name).'/{'.Str::camel($name)."}/force-delete', [{$Name}Controller::class, 'forceDelete'])->name('".Str::camel($name).".force-delete');\n";
         }
 
-        $routeLine .= "    Route::apiResource('" . Str::camel($name) . "', {$Name}Controller::class);\n";
+        if ($withMedia) {
+            $routeLine .= "    Route::post('".Str::camel($name).'/{'.Str::camel($name)."}/upload-media', [{$Name}Controller::class, 'uploadMedia'])->name('".Str::camel($name).".upload-media');\n";
+        }
 
+        $routeLine .= "    Route::apiResource('".Str::camel($name)."', {$Name}Controller::class);\n";
 
         if (File::exists($webPath)) {
             $content = File::get($webPath);
 
             // Add missing controller import if needed
-            if (!Str::contains($content, "use App\\Http\\Controllers\\{$Name}Controller;")) {
+            if (! Str::contains($content, "use App\\Http\\Controllers\\{$Name}Controller;")) {
                 // Insert after the last existing use statement
                 if (preg_match_all('/^use\s.+;$/m', $content, $matches, PREG_OFFSET_CAPTURE)) {
                     $lastUse = end($matches[0]);
                     $pos = $lastUse[1] + strlen($lastUse[0]);
-                    $content = substr($content, 0, $pos) . "\n{$useLine}" . substr($content, $pos);
+                    $content = substr($content, 0, $pos)."\n{$useLine}".substr($content, $pos);
                 } else {
                     // Fallback: prepend if there is no use block
-                    $content = "<?php\n\n{$useLine}" . $content;
+                    $content = "<?php\n\n{$useLine}".$content;
                 }
                 File::put($webPath, $content);
                 $this->info("📌 Added import: {$useLine}");
@@ -181,14 +181,14 @@ class GenerateAModel extends Command
                     File::put($webPath, $content);
                     $this->info("🌐 Added route to middleware group: {$routeLine}");
                 } else {
-                    $this->warn("⚠️ Could not insert route inside middleware group, fallback to bottom.");
-                    if (!Str::contains($content, $routeLine)) {
+                    $this->warn('⚠️ Could not insert route inside middleware group, fallback to bottom.');
+                    if (! Str::contains($content, $routeLine)) {
                         File::append($webPath, $routeLine);
                     }
                 }
             } else {
                 // Fallback when the group is not found
-                if (!Str::contains($content, $routeLine)) {
+                if (! Str::contains($content, $routeLine)) {
                     File::append($webPath, $routeLine);
                     $this->info("🌐 Added route to bottom: {$routeLine}");
                 }
@@ -198,8 +198,11 @@ class GenerateAModel extends Command
 
     protected function generateFillable(array $fields): string
     {
-        if (empty($fields)) return '';
-        $items = array_map(fn($f) => "'$f'", array_keys($fields));
+        if (empty($fields)) {
+            return '';
+        }
+        $items = array_map(fn ($f) => "'$f'", array_keys($fields));
+
         return implode(",\n        ", $items);
     }
 
@@ -210,21 +213,23 @@ class GenerateAModel extends Command
             'text' => 'fake()->paragraph()',
             'boolean' => 'fake()->boolean()',
             'integer' => 'fake()->randomNumber()',
-            'datetime' => 'fake()->dateTime()'
+            'datetime' => 'fake()->dateTime()',
         ];
 
         $out = [];
-        if (count($fields) == 0) $fields = ['name' => 'string'];
+        if (count($fields) == 0) {
+            $fields = ['name' => 'string'];
+        }
         foreach ($fields as $f => $t) {
             $faker = $fakerMap[$t] ?? 'fake()->word()';
             if (in_array($t, ['fk', 'nfk'])) {
                 $modelName = Str::studly(Str::singular(Str::replaceLast('_id', '', $f)));
                 $out[] = "'$f' => $modelName::pluck('id')->random(),";
-            }
-            else{
+            } else {
                 $out[] = "'$f' => $faker,";
             }
         }
+
         return implode("\n            ", $out);
     }
 
@@ -237,6 +242,7 @@ class GenerateAModel extends Command
                 $out[] = "use App\Models\\$modelName;";
             }
         }
+
         return implode("\n", $out);
     }
 
@@ -261,10 +267,10 @@ class GenerateAModel extends Command
         }
 
         if ($softDelete) {
-            $out[] = "\$table->softDeletes();";
+            $out[] = '$table->softDeletes();';
         }
 
-        $out[] = "\$table->timestamps();";
+        $out[] = '$table->timestamps();';
 
         return implode("\n            ", $out);
     }
@@ -280,17 +286,22 @@ class GenerateAModel extends Command
         ];
 
         $out = [];
-        if (count($fields) == 0) $fields = ['name' => 'string'];
+        if (count($fields) == 0) {
+            $fields = ['name' => 'string'];
+        }
         foreach ($fields as $f => $t) {
             $field = $fieldMap[$t] ?? "'nullable'";
             $out[] = "'$f' => $field,";
         }
+
         return implode("\n            ", $out);
     }
 
     protected function generateSoftDeleteMethods(bool $softDelete, string $Name, string $name, string $names): string
     {
-        if (!$softDelete) return '';
+        if (! $softDelete) {
+            return '';
+        }
 
         return <<<PHP
         /**
@@ -331,7 +342,9 @@ class GenerateAModel extends Command
 
     protected function generateHasMediaImports(bool $withMedia)
     {
-        if (!$withMedia) return '';
+        if (! $withMedia) {
+            return '';
+        }
 
         return <<<'PHP'
         use Spatie\Image\Enums\Fit;
@@ -343,7 +356,9 @@ class GenerateAModel extends Command
 
     protected function generateHasMediaControllerMethods(bool $withMedia, string $name, string $Name): string
     {
-        if (!$withMedia) return '';
+        if (! $withMedia) {
+            return '';
+        }
 
         return <<<PHP
         /**
@@ -361,7 +376,9 @@ class GenerateAModel extends Command
 
     protected function generateHasMediaMethods(bool $withMedia): string
     {
-        if (!$withMedia) return '';
+        if (! $withMedia) {
+            return '';
+        }
 
         return <<<'PHP'
         /**
@@ -375,5 +392,4 @@ class GenerateAModel extends Command
             }
         PHP;
     }
-
 }

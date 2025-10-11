@@ -15,7 +15,6 @@ class GenerateRView extends Command
      */
     protected $signature = 'generate:rview {name} {--s|softDelete} {--fields=} {--m|media}';
 
-
     /**
      * The console command description.
      *
@@ -31,7 +30,7 @@ class GenerateRView extends Command
         $name = strtolower(strval($this->argument('name')));
         $Name = Str::studly($name);
         $Names = Str::plural($name);
-        $basePath = rtrim(strval(config("template-starter.generated-react-files-path")), '/'). "/{$name}";
+        $basePath = rtrim(strval(config('template-starter.generated-react-files-path')), '/')."/{$name}";
 
         $isSoftDelete = boolval($this->option('softDelete'));
         $withMedia = boolval($this->option('media'));
@@ -39,7 +38,7 @@ class GenerateRView extends Command
         $files = $this->buildFilesArray($name, $Name, $isSoftDelete, $withMedia);
 
         foreach ($files as $file => $stub) {
-            $filePath = $basePath . '/' . $file;
+            $filePath = $basePath.'/'.$file;
 
             [$archivedButton, $uploadButton] = $this->buildButtons($isSoftDelete, $withMedia, $name, $Name);
 
@@ -66,23 +65,23 @@ class GenerateRView extends Command
     protected function buildFilesArray(string $name, string $Name, bool $isSoftDelete, bool $withMedia): array
     {
         $files = [
-            "index.tsx" => "resources/stubs/react-stubs/index.stub",
-            "show.tsx" => "resources/stubs/react-stubs/show.stub",
-            "components/{$name}-delete-dialog.tsx" => "resources/stubs/react-stubs/delete-dialog.stub",
-            "components/{$name}-filter-sheet.tsx" => "resources/stubs/react-stubs/filter-sheet.stub",
-            "components/{$name}-form-sheet.tsx" => "resources/stubs/react-stubs/form-sheet.stub",
-            "components/{$name}-bulk-edit-sheet.tsx" => "resources/stubs/react-stubs/bulk-edit-sheet.stub",
-            "components/{$name}-bulk-delete-dialog.tsx" => "resources/stubs/react-stubs/bulk-delete-dialog.stub",
-            "components/{$name}-item-card.tsx" => "resources/stubs/react-stubs/item-card.stub",
-            "../../types/{$name}.d.ts" => "resources/stubs/react-stubs/type.stub",
+            'index.tsx' => 'resources/stubs/react-stubs/index.stub',
+            'show.tsx' => 'resources/stubs/react-stubs/show.stub',
+            "components/{$name}-delete-dialog.tsx" => 'resources/stubs/react-stubs/delete-dialog.stub',
+            "components/{$name}-filter-sheet.tsx" => 'resources/stubs/react-stubs/filter-sheet.stub',
+            "components/{$name}-form-sheet.tsx" => 'resources/stubs/react-stubs/form-sheet.stub',
+            "components/{$name}-bulk-edit-sheet.tsx" => 'resources/stubs/react-stubs/bulk-edit-sheet.stub',
+            "components/{$name}-bulk-delete-dialog.tsx" => 'resources/stubs/react-stubs/bulk-delete-dialog.stub',
+            "components/{$name}-item-card.tsx" => 'resources/stubs/react-stubs/item-card.stub',
+            "../../types/{$name}.d.ts" => 'resources/stubs/react-stubs/type.stub',
         ];
 
         if ($isSoftDelete) {
-            $files["archived.tsx"] = "resources/stubs/react-stubs/archived.stub";
+            $files['archived.tsx'] = 'resources/stubs/react-stubs/archived.stub';
         }
 
         if ($withMedia) {
-            $files["components/{$name}-upload-sheet.tsx"] = "resources/stubs/react-stubs/upload-sheet.stub";
+            $files["components/{$name}-upload-sheet.tsx"] = 'resources/stubs/react-stubs/upload-sheet.stub';
         }
 
         return $files;
@@ -91,18 +90,18 @@ class GenerateRView extends Command
     protected function makeFromStub(string $filePath, string $stubPath, array $replacements): void
     {
         $dir = dirname($filePath);
-        if (!File::exists($dir)) {
+        if (! File::exists($dir)) {
             File::makeDirectory($dir, 0755, true);
             $this->info("Created directory: {$dir}");
         }
 
-        if (!File::exists($filePath)) {
+        if (! File::exists($filePath)) {
             $stubFullPath = base_path($stubPath);
             if (File::exists($stubFullPath)) {
                 $content = File::get($stubFullPath);
                 $content = str_replace(array_keys($replacements), array_values($replacements), $content);
             } else {
-                $content = "// " . ($replacements['{{ Name }}'] ?? 'Generated') . ' - ' . basename($filePath);
+                $content = '// '.($replacements['{{ Name }}'] ?? 'Generated').' - '.basename($filePath);
             }
 
             File::put($filePath, $content);
@@ -140,7 +139,7 @@ class GenerateRView extends Command
 
     protected function parseFieldsOption($fieldsOption): array
     {
-        if (!$fieldsOption) {
+        if (! $fieldsOption) {
             return [['name', 'string']];
         }
 
@@ -150,6 +149,7 @@ class GenerateRView extends Command
             [$fieldName, $fieldType] = array_pad(explode(':', $field), 2, 'string');
             $parsed[] = [trim($fieldName), strtolower(trim($fieldType))];
         }
+
         return $parsed;
     }
 
@@ -168,7 +168,7 @@ class GenerateRView extends Command
             };
 
             if ($withMedia) {
-                $typeLines[] = "  media: Media[];";
+                $typeLines[] = '  media: Media[];';
             }
 
             if (in_array($fieldType, ['fk', 'nfk'])) {
@@ -195,15 +195,16 @@ class GenerateRView extends Command
     protected function buildImportLines(array $imports, bool $withMedia): string
     {
         $importLines = '';
-        if (!empty($imports)) {
+        if (! empty($imports)) {
             $importLines = collect($imports)
-                ->map(fn($model) => 'import { ' . $model . ' } from "./' . Str::kebab($model) . '";')
+                ->map(fn ($model) => 'import { '.$model.' } from "./'.Str::kebab($model).'";')
                 ->implode("\n");
         }
         if ($withMedia) {
             $importLines .= "\nimport { Media } from '.';\n";
         }
-        return $importLines . "\n\n";
+
+        return $importLines."\n\n";
     }
 
     protected function updateTypeDefinition(string $name, string $importLines, array $typeLines): void
@@ -219,6 +220,4 @@ class GenerateRView extends Command
             $this->warn("Type file not found: {$dtsPath}");
         }
     }
-
-
 }

@@ -2,16 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\BulkDeleteTransaksiRequest;
+use App\Http\Requests\BulkUpdateTransaksiRequest;
 use App\Http\Requests\StoreTransaksiRequest;
 use App\Http\Requests\UpdateTransaksiRequest;
-use App\Http\Requests\BulkUpdateTransaksiRequest;
-use App\Http\Requests\BulkDeleteTransaksiRequest;
+use App\Http\Requests\UploadTransaksiMediaRequest;
 use App\Models\Project;
 use App\Models\Transaksi;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
-use App\Http\Requests\UploadTransaksiMediaRequest;
-
 
 class TransaksiController extends Controller
 {
@@ -20,16 +19,16 @@ class TransaksiController extends Controller
      */
     public function index(Request $request, Project $project)
     {
-        $this->pass("index transaksi");
-        
+        $this->pass('index transaksi');
+
         $data = Transaksi::query()
             ->with(['media', 'project'])
             // ->orderBy('date', 'desc')
             ->where('project_id', $project->id)
             ->latest()
-            ->when($request->type, function($q, $v){
-                return $v == "pemasukan" ? $q->pemasukan() : $q->pengeluaran();
-            }, function($q){
+            ->when($request->type, function ($q, $v) {
+                return $v == 'pemasukan' ? $q->pemasukan() : $q->pengeluaran();
+            }, function ($q) {
                 $q->pengeluaran();
             });
 
@@ -40,11 +39,11 @@ class TransaksiController extends Controller
             'project' => $project,
             'counts' => $project->counts,
             'permissions' => [
-                'canAdd' => $this->user->can("create transaksi"),
-                'canShow' => $this->user->can("show transaksi"),
-                'canUpdate' => $this->user->can("update transaksi"),
-                'canDelete' => $this->user->can("delete transaksi"),
-            ]
+                'canAdd' => $this->user->can('create transaksi'),
+                'canShow' => $this->user->can('show transaksi'),
+                'canUpdate' => $this->user->can('update transaksi'),
+                'canDelete' => $this->user->can('delete transaksi'),
+            ],
         ]);
     }
 
@@ -53,7 +52,7 @@ class TransaksiController extends Controller
      */
     public function store(StoreTransaksiRequest $request)
     {
-        $this->pass("create transaksi");
+        $this->pass('create transaksi');
 
         $data = $request->validated();
         Transaksi::create($data);
@@ -64,14 +63,14 @@ class TransaksiController extends Controller
      */
     public function show(Transaksi $transaksi)
     {
-        $this->pass("show transaksi");
+        $this->pass('show transaksi');
 
         return Inertia::render('transaksi/show', [
             'transaksi' => $transaksi->load(['media']),
             'permissions' => [
-                'canUpdate' => $this->user->can("update transaksi"),
-                'canDelete' => $this->user->can("delete transaksi"),
-            ]
+                'canUpdate' => $this->user->can('update transaksi'),
+                'canDelete' => $this->user->can('delete transaksi'),
+            ],
         ]);
     }
 
@@ -80,7 +79,7 @@ class TransaksiController extends Controller
      */
     public function update(UpdateTransaksiRequest $request, Transaksi $transaksi)
     {
-        $this->pass("update transaksi");
+        $this->pass('update transaksi');
 
         $data = $request->validated();
         $transaksi->update($data);
@@ -91,7 +90,7 @@ class TransaksiController extends Controller
      */
     public function destroy(Transaksi $transaksi)
     {
-        $this->pass("delete transaksi");
+        $this->pass('delete transaksi');
 
         $transaksi->delete();
     }
@@ -101,7 +100,7 @@ class TransaksiController extends Controller
      */
     public function bulkUpdate(BulkUpdateTransaksiRequest $request)
     {
-        $this->pass("update transaksi");
+        $this->pass('update transaksi');
 
         $data = $request->validated();
         $ids = $data['transaksi_ids'];
@@ -115,20 +114,18 @@ class TransaksiController extends Controller
      */
     public function bulkDelete(BulkDeleteTransaksiRequest $request)
     {
-        $this->pass("delete transaksi");
+        $this->pass('delete transaksi');
 
         $data = $request->validated();
         Transaksi::whereIn('id', $data['transaksi_ids'])->delete();
     }
 
-    
-    
     /**
      * Register media conversions.
      */
     public function uploadMedia(UploadTransaksiMediaRequest $request, Transaksi $transaksi)
     {
-        $this->pass("update transaksi");
+        $this->pass('update transaksi');
 
         $data = $request->validated();
         $transaksi->addMedia($data['file'])->toMediaCollection();

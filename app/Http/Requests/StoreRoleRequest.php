@@ -23,7 +23,7 @@ class StoreRoleRequest extends FormRequest
     {
         return [
             'name' => 'required',
-            'guard_name' => 'nullable'
+            'guard_name' => 'nullable',
         ];
     }
 }

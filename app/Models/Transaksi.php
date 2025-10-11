@@ -9,15 +9,12 @@ use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
-
 class Transaksi extends Model implements HasMedia
 {
     use HasFactory;
-    
     use InteractsWithMedia;
 
-
-    //protected $table = 'transaksis';
+    // protected $table = 'transaksis';
 
     /*
     protected $fillable = [

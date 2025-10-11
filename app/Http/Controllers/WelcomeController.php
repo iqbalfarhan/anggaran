@@ -3,9 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Middleware\WithLandingPageMiddleware;
-use Illuminate\Http\Request;
-use Inertia\Inertia;
 use Illuminate\Routing\Controller as BaseController;
+use Inertia\Inertia;
 
 class WelcomeController extends BaseController
 {
@@ -18,7 +17,7 @@ class WelcomeController extends BaseController
     {
         return Inertia::render('welcome/index');
     }
-    
+
     public function about()
     {
         return Inertia::render('welcome/about', [

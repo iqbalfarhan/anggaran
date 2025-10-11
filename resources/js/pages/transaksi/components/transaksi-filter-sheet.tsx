@@ -9,7 +9,7 @@ import { FC, PropsWithChildren, useState } from 'react';
 import { toast } from 'sonner';
 
 type Props = PropsWithChildren & {
-  query: {[key: string]: string}
+  query: { [key: string]: string };
 };
 
 const TransaksiFilterSheet: FC<Props> = ({ children }) => {

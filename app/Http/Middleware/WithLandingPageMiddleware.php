@@ -18,7 +18,8 @@ class WithLandingPageMiddleware
         if (config('template-starter.with-landingpage') == false) {
             return redirect()->route('dashboard');
         }
+
         return $next($request);
-        
+
     }
 }

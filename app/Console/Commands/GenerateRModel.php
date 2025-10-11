@@ -4,8 +4,8 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Str;
+
 use function Laravel\Prompts\multiselect;
-use function Laravel\Prompts\select;
 use function Laravel\Prompts\text;
 use function Laravel\Prompts\textarea;
 
@@ -103,12 +103,13 @@ class GenerateRModel extends Command
         );
 
         $rows = array_map('trim', explode(PHP_EOL, $input));
-        $rows = array_values(array_filter($rows, fn($r) => $r !== ''));
+        $rows = array_values(array_filter($rows, fn ($r) => $r !== ''));
+
         return $rows;
     }
 
     /**
-     * @param array<int, string> $fields
+     * @param  array<int, string>  $fields
      */
     protected function fieldsToCsv(array $fields): string
     {

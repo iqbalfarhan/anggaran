@@ -22,14 +22,14 @@ class UserController extends Controller
 
         $data = User::query()
             ->with(['media', 'roles'])
-            ->when($request->name, function($q, $v) {
+            ->when($request->name, function ($q, $v) {
                 $q->where('name', $v);
             });
 
         return Inertia::render('user/index', [
             'users' => $data->get(),
             'query' => $request->input(),
-            'roles' => Role::whereNot('name', "superadmin")->get()
+            'roles' => Role::whereNot('name', 'superadmin')->get(),
         ]);
     }
 
@@ -52,7 +52,7 @@ class UserController extends Controller
         $this->pass('show user');
 
         return Inertia::render('user/show', [
-            'user' => $user
+            'user' => $user,
         ]);
     }
 
@@ -86,7 +86,7 @@ class UserController extends Controller
         $data = $request->validated();
         User::whereIn('id', $data['user_ids'])->update($data);
     }
-    
+
     public function bulkDelete(BulkDeleteUserRequest $request)
     {
         $this->pass('delete user');

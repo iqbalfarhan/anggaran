@@ -2,7 +2,7 @@
 
 return [
 
-	/*
+    /*
     |--------------------------------------------------------------------------
     | Default role lists
     |--------------------------------------------------------------------------
@@ -12,14 +12,14 @@ return [
     | list of "default-roles" configured below.
     |
     */
-	
-	'default-roles' => [
-		'superadmin',
-		'admin',
-		'user',
-	],
 
-	/*
+    'default-roles' => [
+        'superadmin',
+        'admin',
+        'user',
+    ],
+
+    /*
     |--------------------------------------------------------------------------
     | Default role for new users
     |--------------------------------------------------------------------------
@@ -30,9 +30,9 @@ return [
     |
     */
 
-	'default-role' => 'user',
+    'default-role' => 'user',
 
-	/*
+    /*
     |--------------------------------------------------------------------------
     | Is Landing Page Enabled
     |--------------------------------------------------------------------------
@@ -43,7 +43,7 @@ return [
     |
     */
 
-	'with-landingpage' => env('WITH_LANDINGPAGE', false),
+    'with-landingpage' => env('WITH_LANDINGPAGE', false),
 
     /*
     |--------------------------------------------------------------------------
@@ -59,28 +59,28 @@ return [
     'generated-react-files-path' => env('GENERATED_REACT_FILES_PATH', resource_path('js/pages')),
 
     'additional_permissions' => [
-        "settings" => [
-            "menu adminer" => ['superadmin'],
+        'settings' => [
+            'menu adminer' => ['superadmin'],
         ],
-        "role_permission" => [
-            "menu role" => ['superadmin'],
-            "index role" => ['superadmin'],
-            "show role" => ['superadmin'],
-            "create role" => ['superadmin'],
-            "update role" => ['superadmin'],
-            "delete role" => ['superadmin'],
-            "index permission" => ['superadmin'],
-            "create permission" => ['superadmin'],
-            "update permission" => ['superadmin'],
-            "delete permission" => ['superadmin'],
-            "resync permission" => ['superadmin'],
+        'role_permission' => [
+            'menu role' => ['superadmin'],
+            'index role' => ['superadmin'],
+            'show role' => ['superadmin'],
+            'create role' => ['superadmin'],
+            'update role' => ['superadmin'],
+            'delete role' => ['superadmin'],
+            'index permission' => ['superadmin'],
+            'create permission' => ['superadmin'],
+            'update permission' => ['superadmin'],
+            'delete permission' => ['superadmin'],
+            'resync permission' => ['superadmin'],
         ],
-        "dashboard" => [
-            "profile" => ["*"],
-            "documentation" => ["*"]
-        ]
+        'dashboard' => [
+            'profile' => ['*'],
+            'documentation' => ['*'],
+        ],
     ],
 
-    'enable_adminer_menu' => false
+    'enable_adminer_menu' => false,
 
 ];

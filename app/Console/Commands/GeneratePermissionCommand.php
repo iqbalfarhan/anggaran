@@ -29,7 +29,9 @@ class GeneratePermissionCommand extends Command
             $files = scandir($modelPath);
 
             foreach ($files as $file) {
-                if ($file === '.' || $file === '..') continue;
+                if ($file === '.' || $file === '..') {
+                    continue;
+                }
                 $className = pathinfo($file, PATHINFO_FILENAME);
                 $features[] = strtolower($className); // konsisten lowercase
             }
@@ -37,13 +39,14 @@ class GeneratePermissionCommand extends Command
             // 🔎 ambil dari argument tunggal / option -f
             $featuresInput = $this->argument('feature') ?? $this->option('feature');
 
-            if (!$featuresInput) {
+            if (! $featuresInput) {
                 $this->error(implode("\n", [
-                    "❌ Harus isi feature. Contoh: ,
+                    '❌ Harus isi feature. Contoh: ,
                     php artisan generate:permission user ,
                     php artisan generate:permission -f=user,role ,
-                    php artisan generate:permission --all",
+                    php artisan generate:permission --all',
                 ]));
+
                 return;
             }
 
@@ -60,7 +63,9 @@ class GeneratePermissionCommand extends Command
 
         // loop fitur
         foreach ($features as $feature) {
-            if (!$feature) continue;
+            if (! $feature) {
+                continue;
+            }
 
             $this->info("🔧 Generating permissions for: {$feature}");
 
@@ -69,21 +74,21 @@ class GeneratePermissionCommand extends Command
                 $permissionName = "{$perm} {$feature}";
                 Permission::updateOrCreate([
                     'group' => $feature,
-                    'name' => $permissionName
+                    'name' => $permissionName,
                 ], []);
                 $this->line("   ✅ {$permissionName}");
             }
 
             // softdelete perms
             if ($this->option('softDelete')) {
-                $modelClass = "App\\Models\\" . Str::studly($feature);
+                $modelClass = 'App\\Models\\'.Str::studly($feature);
 
                 if ($this->modelUsesSoftDeletes($modelClass)) {
                     foreach ($softDeletePermissions as $perm) {
                         $permissionName = "{$perm} {$feature}";
                         Permission::updateOrCreate([
                             'group' => $feature,
-                            'name' => $permissionName
+                            'name' => $permissionName,
                         ], []);
                         $this->line("   ✅ {$permissionName}");
                     }
@@ -91,38 +96,41 @@ class GeneratePermissionCommand extends Command
                     $this->warn("   ⚠️ {$feature} tidak pakai SoftDeletes, skip soft delete permissions.");
                 }
             }
-            
+
             // extra perms from --add
             if ($this->option('add')) {
                 $extras = explode(',', $this->option('add'));
                 $extras = array_map('trim', $extras);
 
                 foreach ($extras as $perm) {
-                    if (!$perm) continue;
+                    if (! $perm) {
+                        continue;
+                    }
                     $permissionName = "{$perm} {$feature}";
                     Permission::updateOrCreate([
                         'group' => $feature,
-                        'name' => $permissionName
+                        'name' => $permissionName,
                     ], []);
                     $this->line("   ✅ {$permissionName}");
                 }
             }
         }
 
-        $this->info("🚀 Permission generation completed!");
-        
-        Artisan::call("db:seed PermissionSeeder");
+        $this->info('🚀 Permission generation completed!');
 
-        $this->info("🚀 Additional permission generation completed!");
+        Artisan::call('db:seed PermissionSeeder');
+
+        $this->info('🚀 Additional permission generation completed!');
     }
 
     protected function modelUsesSoftDeletes(string $modelClass): bool
     {
-        if (!class_exists($modelClass)) {
+        if (! class_exists($modelClass)) {
             return false;
         }
 
         $traits = class_uses_recursive($modelClass);
+
         return in_array(\Illuminate\Database\Eloquent\SoftDeletes::class, $traits);
     }
 }

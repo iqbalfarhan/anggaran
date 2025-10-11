@@ -60,7 +60,6 @@ const TransaksiUploadMediaSheet: FC<Props> = ({ transaksi, children }) => {
                 <img key={media.id} src={media.preview_url} alt={media.name} className="aspect-square w-full object-cover" />
               ))}
             </div>
-
           </form>
         </ScrollArea>
         <SheetFooter>

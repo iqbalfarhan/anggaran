@@ -26,7 +26,7 @@ return Application::configure(basePath: dirname(__DIR__))
             \Illuminate\Cookie\Middleware\EncryptCookies::class,
             \Illuminate\Session\Middleware\StartSession::class,
             \Illuminate\Auth\Middleware\Authenticate::class,
-            App\Http\Middleware\SuperadminMiddleware::class
+            App\Http\Middleware\SuperadminMiddleware::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

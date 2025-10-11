@@ -3,15 +3,12 @@
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\MediaController;
 use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\TransaksiController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WelcomeController;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
-use App\Http\Controllers\TransaksiController;
-use App\Http\Controllers\ProjectController;
-
-
 
 Route::get('/', [WelcomeController::class, 'index'])->name('home');
 Route::get('/about', [WelcomeController::class, 'about'])->name('about');
@@ -31,7 +28,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('permission/resync', [PermissionController::class, 'resync'])->name('permission.resync');
     Route::apiResource('permission', PermissionController::class);
     Route::apiResource('doc', MediaController::class);
-    
+
     Route::get('transaksi/{transaksi}/raw', [TransaksiController::class, 'raw'])->name('transaksi.raw');
     Route::put('transaksi/bulk', [TransaksiController::class, 'bulkUpdate'])->name('transaksi.bulk.update');
     Route::delete('transaksi/bulk', [TransaksiController::class, 'bulkDelete'])->name('transaksi.bulk.destroy');

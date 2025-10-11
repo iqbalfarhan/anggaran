@@ -2,7 +2,6 @@
 
 namespace App\Console\Commands;
 
-use App\Models\Transaksi;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 
@@ -43,11 +42,13 @@ class MaxPengeluaranPerHari extends Command
 
         if ($rows->isEmpty()) {
             $this->info('Tidak ada data pengeluaran.');
+
             return self::SUCCESS;
         }
 
         $this->table(['Tanggal', 'Hari', 'Total Pengeluaran'], $rows->map(function ($row) {
             $date = \Carbon\Carbon::parse($row->date);
+
             return [
                 $date->format('Y-m-d'),
                 $date->translatedFormat('l'),
@@ -58,5 +59,3 @@ class MaxPengeluaranPerHari extends Command
         return self::SUCCESS;
     }
 }
-
-

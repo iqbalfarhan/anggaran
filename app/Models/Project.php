@@ -4,18 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-
-class Project extends Model 
+class Project extends Model
 {
     use HasFactory;
     use SoftDeletes;
 
-    
-
-    //protected $table = 'projects';
+    // protected $table = 'projects';
 
     /*
     protected $fillable = [
@@ -32,7 +28,7 @@ class Project extends Model
     ];
 
     public $appends = [
-        'counts'
+        'counts',
     ];
 
     public function user()
@@ -58,5 +54,4 @@ class Project extends Model
             'sisa' => $this->transaksis()->pemasukan()->sum('price') - $this->transaksis()->pengeluaran()->sum('price'),
         ];
     }
-    
 }
