@@ -45,6 +45,7 @@ class ProjectController extends Controller
         $this->pass('create project');
 
         $data = $request->validated();
+        $data['user_id'] = $this->user->id;
         Project::create($data);
     }
 
