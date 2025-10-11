@@ -1,3 +1,4 @@
+import HeadingSmall from '@/components/heading-small';
 import MarkdownReader from '@/components/markdown-reader';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -210,8 +211,11 @@ const TransaksiList: FC<Props> = ({ transaksis }) => {
             const totalPerDay = filteredItems.reduce((sum, transaksi) => sum + (transaksi.price ?? 0), 0);
             return (
               <div className="space-y-4">
-                <p className="font-bold">{dayjs(date).format('dddd, DD MMMM YYYY')}</p>
-                {filteredItems.length > 0 && <p className="text-sm opacity-70">Total pengeluaran: {formatRupiah(totalPerDay)}</p>}
+                <HeadingSmall
+                  title={dayjs(date).format('dddd, DD MMMM YYYY')}
+                  description={filteredItems.length > 0 ? `Total pengeluaran: ${formatRupiah(totalPerDay)}` : undefined}
+                />
+
                 <div className="grid-responsive grid gap-4">
                   {filteredItems.map((transaksi) => (
                     <TransaksiItemCard key={transaksi.id} transaksi={transaksi} />
