@@ -50,6 +50,7 @@ class HandleInertiaRequests extends Middleware
                 'user' => $request->user(),
                 'roles' => $request->user()?->getRoleNames(),
             ],
+            'owned' => $user?->projects?->pluck('name', 'id')->toArray(),
             'menus' => [
                 'user' => $user?->can('menu user'),
                 'role' => $user?->can('menu role'),

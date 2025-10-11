@@ -2,7 +2,7 @@ import { NavFooter } from '@/components/nav-footer';
 import { NavMain } from '@/components/nav-main';
 import { NavUser } from '@/components/nav-user';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
-import { type NavItem } from '@/types';
+import { SharedData, type NavItem } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
 import { Database, Folder, KeySquare, LayoutGrid, Settings, Users } from 'lucide-react';
 import AppLogo from './app-logo';
@@ -23,11 +23,11 @@ const mainNavItems: NavItem[] = [
 const footerNavItems: NavItem[] = [];
 
 export function AppSidebar() {
-  const { menus } = usePage<{ menus: Record<string, boolean> }>().props;
+  const { menus, owned = {} } = usePage<SharedData & { menus: Record<string, boolean> }>().props;
   // configure menus "available" in HandleInertiaRequest.php
 
   return (
-    <Sidebar collapsible="icon" variant="sidebar">
+    <Sidebar collapsible="icon" variant="inset">
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
@@ -50,12 +50,12 @@ export function AppSidebar() {
             //   icon: BookOpen,
             //   available: menus.feature,
             // },
-            {
-              title: 'Projects',
-              href: route('project.index'),
-              icon: Folder,
-              available: menus.project,
-            },
+            // {
+            //   title: 'Projects',
+            //   href: route('project.index'),
+            //   icon: Folder,
+            //   available: menus.project,
+            // },
             // {
             //   title: 'Transaksi',
             //   href: route('transaksi.index'),
@@ -64,6 +64,16 @@ export function AppSidebar() {
             // },
           ]}
           label="Dashboard"
+        />
+        {/* <DDump content={Object.entries(owned).map(([id, name]) => ({ id, name }))} /> */}
+        <NavMain
+          items={Object.entries(owned)?.map(([id, name]) => ({
+            title: name,
+            href: route('project.show', id),
+            icon: Folder,
+            available: menus.project,
+          }))}
+          label="Projects"
         />
         <NavMain
           items={[

@@ -39,6 +39,7 @@ export interface SharedData {
   sidebarOpen: boolean;
   permissions?: Record<string, boolean>;
   counts?: Record<string, number>;
+  owned?: Record<string, string>;
   viewMode: ViewMode;
   [key: string]: unknown;
 }

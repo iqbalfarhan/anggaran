@@ -42,18 +42,10 @@ const TransaksiList: FC<Props> = ({ transaksis, project }) => {
 
   return (
     <AppLayout
-      title="Transaksis"
+      title={`Transaksi ${project ? `- ${project.name}` : ''}`}
       description="Manage your transaksis"
       actions={
         <>
-          {permissions?.canAdd && (
-            <TransaksiFormSheet purpose="create">
-              <Button>
-                <Plus />
-                Create new transaksi
-              </Button>
-            </TransaksiFormSheet>
-          )}
           {permissions?.canUpdateProject && (
             <ProjectFormSheet purpose="edit" project={project}>
               <Button>
@@ -61,11 +53,15 @@ const TransaksiList: FC<Props> = ({ transaksis, project }) => {
               </Button>
             </ProjectFormSheet>
           )}
+          <Button onClick={toggle}>
+            <TableIcon />
+            {capitalizeWords(mode)}
+          </Button>
         </>
       }
     >
       <TransaksiStatWidget />
-      <div className="flex gap-2">
+      <div className="flex flex-col gap-2 md:flex-row">
         <Input placeholder="Search transaksis..." value={cari} onChange={(e) => setCari(e.target.value)} />
         {/* <TransaksiFilterSheet query={query}>
           <Button>
@@ -93,10 +89,14 @@ const TransaksiList: FC<Props> = ({ transaksis, project }) => {
             </TransaksiBulkDeleteDialog>
           </>
         )}
-        <Button onClick={toggle}>
-          <TableIcon />
-          {capitalizeWords(mode)}
-        </Button>
+        {permissions?.canAdd && (
+          <TransaksiFormSheet purpose="create">
+            <Button>
+              <Plus />
+              Transaksi baru
+            </Button>
+          </TransaksiFormSheet>
+        )}
       </div>
       {mode == 'table' ? (
         <Table>

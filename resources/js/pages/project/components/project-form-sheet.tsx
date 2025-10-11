@@ -5,6 +5,7 @@ import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Sheet, SheetClose, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import { Textarea } from '@/components/ui/textarea';
+import { useIsMobile } from '@/hooks/use-mobile';
 import { capitalizeWords, em } from '@/lib/utils';
 import { FormPurpose } from '@/types';
 import { Project } from '@/types/project';
@@ -20,6 +21,8 @@ type Props = PropsWithChildren & {
 
 const ProjectFormSheet: FC<Props> = ({ children, project, purpose }) => {
   const [open, setOpen] = useState(false);
+
+  const mobile = useIsMobile();
 
   const { data, setData, put, post, reset, processing } = useForm({
     name: project?.name ?? '',
@@ -52,7 +55,7 @@ const ProjectFormSheet: FC<Props> = ({ children, project, purpose }) => {
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>{children}</SheetTrigger>
-      <SheetContent>
+      <SheetContent side={mobile ? 'bottom' : 'right'}>
         <SheetHeader>
           <SheetTitle>{capitalizeWords(purpose)} data project</SheetTitle>
           <SheetDescription>Form untuk {purpose} data project</SheetDescription>
