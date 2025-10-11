@@ -1,4 +1,4 @@
-import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { formatRupiah } from '@/lib/utils';
 import { Project } from '@/types/project';
@@ -20,6 +20,7 @@ const ProjectItemCard: FC<Props> = ({ project, className }) => {
       <CardFooter className="flex items-center justify-between">
         <Avatar className="size-6">
           <AvatarFallback className="bg-primary text-primary-foreground">{project.user.name.charAt(0).toUpperCase()}</AvatarFallback>
+          <AvatarImage src={project.user.avatar} alt={project.user.name} />
         </Avatar>
         <CardDescription className="text-right font-mono">{formatRupiah(project.counts.sisa ?? 0)}</CardDescription>
       </CardFooter>

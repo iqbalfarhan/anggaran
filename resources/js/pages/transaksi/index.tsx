@@ -205,7 +205,7 @@ const TransaksiList: FC<Props> = ({ transaksis, project }) => {
                       <TableRow className="bg-muted/30">
                         <TableCell colSpan={3} />
                         <TableCell className="font-semibold">{formatRupiah(totalPerDay)}</TableCell>
-                        <TableCell className="text-center opacity-70">Total pengeluaran hari ini</TableCell>
+                        <TableCell className="text-center opacity-70">Total hari ini</TableCell>
                       </TableRow>
                     )}
                   </>
@@ -216,11 +216,11 @@ const TransaksiList: FC<Props> = ({ transaksis, project }) => {
         </Table>
       ) : (
         <div className="space-y-10">
-          {Object.entries(grouped).map(([date, items]) => {
+          {Object.entries(grouped).map(([date, items], index) => {
             const filteredItems = items.filter((transaksi) => JSON.stringify(transaksi).toLowerCase().includes(cari.toLowerCase()));
             const totalPerDay = filteredItems.reduce((sum, transaksi) => sum + (transaksi.price ?? 0), 0);
             return (
-              <div className="space-y-4">
+              <div className="space-y-4" key={index}>
                 <HeadingSmall
                   title={dayjs(date).format('dddd, DD MMMM YYYY')}
                   description={filteredItems.length > 0 ? `Total pengeluaran: ${formatRupiah(totalPerDay)}` : undefined}

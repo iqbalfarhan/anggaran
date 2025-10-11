@@ -40,7 +40,7 @@ export function AppSidebar() {
         </SidebarMenu>
       </SidebarHeader>
 
-      <SidebarContent className="space-y-4">
+      <SidebarContent className="space-y-3">
         <NavMain
           items={[
             ...mainNavItems,
@@ -50,12 +50,12 @@ export function AppSidebar() {
             //   icon: BookOpen,
             //   available: menus.feature,
             // },
-            // {
-            //   title: 'Projects',
-            //   href: route('project.index'),
-            //   icon: Folder,
-            //   available: menus.project,
-            // },
+            {
+              title: 'Projects',
+              href: route('project.index'),
+              icon: Folder,
+              available: menus.project,
+            },
             // {
             //   title: 'Transaksi',
             //   href: route('transaksi.index'),
@@ -71,7 +71,7 @@ export function AppSidebar() {
             title: name,
             href: route('project.show', id),
             icon: Folder,
-            available: menus.project,
+            available: menus.showProject,
           }))}
           label="Projects"
         />

@@ -1,4 +1,3 @@
-import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import AppLayout from '@/layouts/app-layout';
 import { SharedData, type BreadcrumbItem } from '@/types';
@@ -28,19 +27,7 @@ const Dashboard: FC<Props> = ({ projects = [] }) => {
   } = usePage<SharedData>().props;
 
   return (
-    <AppLayout
-      title="Dashboard"
-      description={`Selamat datang, kamu masuk sebagai ${roles.join(', ')}`}
-      breadcrumbs={breadcrumbs}
-      actions={
-        <ProjectFormSheet purpose="create">
-          <Button>
-            <Plus />
-            Buat Project
-          </Button>
-        </ProjectFormSheet>
-      }
-    >
+    <AppLayout title="Dashboard" description={`Selamat datang, kamu masuk sebagai ${roles.join(', ')}`} breadcrumbs={breadcrumbs}>
       <div className="grid gap-6 lg:grid-cols-2">
         <UserInfoWidget />
         <DateTimeWidget />
@@ -49,12 +36,14 @@ const Dashboard: FC<Props> = ({ projects = [] }) => {
         {projects?.map((project) => (
           <ProjectItemCard key={project.id} project={project} />
         ))}
-        <Card className="cursor-pointer border-4 border-dashed opacity-70 hover:opacity-100">
-          <CardContent className="flex h-full flex-col items-center justify-center gap-1.5">
-            <Plus />
-            Buat project baru
-          </CardContent>
-        </Card>
+        <ProjectFormSheet purpose="create">
+          <Card className="cursor-pointer border-4 border-dashed opacity-70 hover:opacity-100">
+            <CardContent className="flex h-full flex-col items-center justify-center gap-1.5">
+              <Plus />
+              Buat project baru
+            </CardContent>
+          </Card>
+        </ProjectFormSheet>
       </div>
     </AppLayout>
   );
