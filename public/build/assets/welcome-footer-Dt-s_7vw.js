@@ -1,0 +1,1 @@
+import{a as r,j as e}from"./app-CR-dwGmk.js";/* empty css            */const a=()=>{const{quote:s}=r().props;return e.jsx("div",{className:"grid py-12",children:e.jsxs("div",{children:[e.jsx("p",{className:"text-muted-foreground",children:s.message}),e.jsx("p",{children:s.author})]})})};export{a as default};
