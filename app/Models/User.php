@@ -65,4 +65,9 @@ class User extends Authenticatable implements HasMedia
             ->fit(Fit::Contain, 300, 300)
             ->nonQueued();
     }
+
+    public function projects()
+    {
+        return $this->hasMany(Project::class);
+    }
 }

@@ -9,6 +9,8 @@ use App\Http\Controllers\WelcomeController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\TransaksiController;
+use App\Http\Controllers\ProjectController;
+
 
 
 Route::get('/', [WelcomeController::class, 'index'])->name('home');
@@ -35,6 +37,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::delete('transaksi/bulk', [TransaksiController::class, 'bulkDelete'])->name('transaksi.bulk.destroy');
     Route::post('transaksi/{transaksi}/upload-media', [TransaksiController::class, 'uploadMedia'])->name('transaksi.upload-media');
     Route::apiResource('transaksi', TransaksiController::class);
+
+    Route::put('project/bulk', [ProjectController::class, 'bulkUpdate'])->name('project.bulk.update');
+    Route::delete('project/bulk', [ProjectController::class, 'bulkDelete'])->name('project.bulk.destroy');
+    Route::get('project/archived', [ProjectController::class, 'archived'])->name('project.archived');
+    Route::put('project/{project}/restore', [ProjectController::class, 'restore'])->name('project.restore');
+    Route::delete('project/{project}/force-delete', [ProjectController::class, 'forceDelete'])->name('project.force-delete');
+    Route::get('project/{project}', [TransaksiController::class, 'index'])->name('project.show');
+    Route::apiResource('project', ProjectController::class)->except(['show']);
 });
 
 require __DIR__.'/settings.php';

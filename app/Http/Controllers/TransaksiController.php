@@ -6,6 +6,7 @@ use App\Http\Requests\StoreTransaksiRequest;
 use App\Http\Requests\UpdateTransaksiRequest;
 use App\Http\Requests\BulkUpdateTransaksiRequest;
 use App\Http\Requests\BulkDeleteTransaksiRequest;
+use App\Models\Project;
 use App\Models\Transaksi;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -17,13 +18,14 @@ class TransaksiController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index(Request $request, Project $project)
     {
         $this->pass("index transaksi");
         
         $data = Transaksi::query()
-            ->with(['media'])
+            ->with(['media', 'project'])
             // ->orderBy('date', 'desc')
+            ->where('project_id', $project->id)
             ->latest()
             ->when($request->type, function($q, $v){
                 return $v == "pemasukan" ? $q->pemasukan() : $q->pengeluaran();
@@ -34,11 +36,9 @@ class TransaksiController extends Controller
         return Inertia::render('transaksi/index', [
             'transaksis' => $data->get(),
             'query' => $request->input(),
-            'counts' => [
-                'pemasukan' => Transaksi::pemasukan()->sum('price'),
-                'pengeluaran' => Transaksi::pengeluaran()->sum('price'),
-                'sisa' => Transaksi::pemasukan()->sum('price') - Transaksi::pengeluaran()->sum('price'),
-            ],
+            'projects' => Project::get(),
+            'project' => $project,
+            'counts' => $project->counts,
             'permissions' => [
                 'canAdd' => $this->user->can("create transaksi"),
                 'canShow' => $this->user->can("show transaksi"),

@@ -26,6 +26,7 @@ class Transaksi extends Model implements HasMedia
         'type',
         'price',
         'description'
+        'project_id',
     ];
     */
 
@@ -63,5 +64,10 @@ class Transaksi extends Model implements HasMedia
         $this->addMediaConversion('preview')
             ->fit(Fit::Contain, 300, 300)
             ->nonQueued();
+    }
+
+    public function project()
+    {
+        return $this->belongsTo(Project::class);
     }
 }

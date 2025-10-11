@@ -1,9 +1,13 @@
-import { Button } from '@/components/ui/button';
+import FormControl from '@/components/form-control';
 import SubmitButton from '@/components/submit-button';
+import { Button } from '@/components/ui/button';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Sheet, SheetClose, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import { em } from '@/lib/utils';
+import { SharedData } from '@/types';
+import { Project } from '@/types/project';
 import { Transaksi } from '@/types/transaksi';
-import { useForm } from '@inertiajs/react';
+import { useForm, usePage } from '@inertiajs/react';
 import { Check, X } from 'lucide-react';
 import { FC, PropsWithChildren, useEffect } from 'react';
 import { toast } from 'sonner';
@@ -16,7 +20,10 @@ type Props = PropsWithChildren & {
 const TransaksiBulkEditSheet: FC<Props> = ({ children, transaksiIds, onSuccess }) => {
   const { data, setData, put, processing } = useForm({
     transaksi_ids: transaksiIds,
+    project_id: null as Project['id'] | null,
   });
+
+  const { projects = [] } = usePage<SharedData & { projects: Project[] }>().props;
 
   useEffect(() => {
     setData('transaksi_ids', transaksiIds);
@@ -41,6 +48,26 @@ const TransaksiBulkEditSheet: FC<Props> = ({ children, transaksiIds, onSuccess }
           <SheetTitle>Ubah transaksi</SheetTitle>
           <SheetDescription>Ubah data {data.transaksi_ids.length} transaksi</SheetDescription>
         </SheetHeader>
+        <div className="px-4">
+          <FormControl label="Pindah ke project">
+            <Select
+              value={data.project_id?.toString() || ''}
+              onValueChange={(val) => setData('project_id', val ? parseInt(val) : null)}
+              disabled={processing}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder={'Pilih project'} />
+              </SelectTrigger>
+              <SelectContent>
+                {projects.map((project) => (
+                  <SelectItem key={project.id} value={project.id.toString()} onSelect={() => setData('project_id', project.id)}>
+                    {project.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </FormControl>
+        </div>
         <SheetFooter>
           <SubmitButton icon={Check} onClick={handleSubmit} label={`Simpan transaksi`} loading={processing} disabled={processing} />
           <SheetClose asChild>

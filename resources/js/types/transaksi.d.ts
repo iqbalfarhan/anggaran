@@ -1,19 +1,15 @@
-
 import { Media } from '.';
-
-
+import { Project } from './project';
 
 export type Transaksi = {
   id: number;
-  media: Media[];
   name: string;
-  media: Media[];
   date: string;
-  media: Media[];
   type: string;
-  media: Media[];
   price: number;
   media: Media[];
+  project_id: Project['id'];
+  project: Project;
   description: string;
   created_at: string;
   updated_at: string;

@@ -10,7 +10,7 @@ const TransaksiStatWidget = () => {
 
   const { counts } = usePage<SharedData>().props;
   const filterType = (type: string) => {
-    router.get(route('transaksi.index', { type }));
+    router.get('', { type });
   };
 
   if (mobile) {

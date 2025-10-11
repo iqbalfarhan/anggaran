@@ -4,10 +4,10 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class BulkUpdateTransaksiRequest extends FormRequest
+class BulkDeleteProjectRequest extends FormRequest
 {
     /**
-     * Determine if the transaksi is authorized to make this request.
+     * Determine if the project is authorized to make this request.
      */
     public function authorize(): bool
     {
@@ -22,9 +22,8 @@ class BulkUpdateTransaksiRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'transaksi_ids' => 'required|array',
-            'transaksi_ids.*' => 'exists:transaksis,id',
-            'project_id' => 'nullable|exists:projects,id',
+            'project_ids' => 'required|array',
+            'project_ids.*' => 'exists:projects,id',
         ];
     }
 }

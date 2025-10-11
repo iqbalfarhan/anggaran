@@ -11,8 +11,9 @@ import { Textarea } from '@/components/ui/textarea';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { capitalizeWords, em } from '@/lib/utils';
 import { FormPurpose } from '@/types';
+import { Project } from '@/types/project';
 import { Transaksi } from '@/types/transaksi';
-import { useForm } from '@inertiajs/react';
+import { useForm, usePage } from '@inertiajs/react';
 import dayjs from 'dayjs';
 import { X } from 'lucide-react';
 import { FC, PropsWithChildren, useState } from 'react';
@@ -26,6 +27,8 @@ type Props = PropsWithChildren & {
 const TransaksiFormSheet: FC<Props> = ({ children, transaksi, purpose }) => {
   const [open, setOpen] = useState(false);
 
+  const { project } = usePage<{ project: Project }>().props;
+
   const mobile = useIsMobile();
 
   const { data, setData, put, post, reset, processing } = useForm({
@@ -33,6 +36,7 @@ const TransaksiFormSheet: FC<Props> = ({ children, transaksi, purpose }) => {
     date: transaksi?.date ?? dayjs().format('YYYY-MM-DD'),
     type: transaksi?.type ?? 'pengeluaran',
     price: transaksi?.price ?? '',
+    project_id: transaksi?.project_id ?? project.id ?? '',
     description: transaksi?.description ?? '',
   });
 

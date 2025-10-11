@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Project;
 use App\Models\Transaksi;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -11,11 +12,7 @@ class DashboardController extends Controller
     public function index()
     {
         return Inertia::render('dashboard/index', [
-            'counts' => [
-                'pemasukan' => Transaksi::pemasukan()->sum('price'),
-                'pengeluaran' => Transaksi::pengeluaran()->sum('price'),
-                'sisa' => Transaksi::pemasukan()->sum('price') - Transaksi::pengeluaran()->sum('price'),
-            ],
+            'projects' => Project::with(['user'])->owned()->get(),
         ]);
     }
 

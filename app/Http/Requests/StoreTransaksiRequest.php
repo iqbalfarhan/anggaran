@@ -19,6 +19,7 @@ class StoreTransaksiRequest extends FormRequest
             'type' => 'required|string|max:255',
             'price' => 'required|numeric',
             'description' => 'required|string',
+            'project_id' => 'required|integer|exists:projects,id',
         ];
     }
 }
