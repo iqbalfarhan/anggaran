@@ -47,7 +47,6 @@ const TransaksiFormSheet: FC<Props> = ({ children, transaksi, purpose }) => {
         onSuccess: () => {
           toast.success('Transaksi created successfully');
           setData('name', '');
-          setData('date', dayjs().format('YYYY-MM-DD'));
           setData('type', 'pengeluaran');
           setData('price', '');
           setData('description', '');
