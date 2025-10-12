@@ -18,7 +18,7 @@ class StoreTransaksiRequest extends FormRequest
             'date' => 'nullable',
             'type' => 'required|string|max:255',
             'price' => 'required|numeric',
-            'description' => 'required|string',
+            'description' => 'nullable|string',
             'project_id' => 'required|integer|exists:projects,id',
         ];
     }

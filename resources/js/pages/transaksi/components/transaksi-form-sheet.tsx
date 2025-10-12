@@ -31,7 +31,7 @@ const TransaksiFormSheet: FC<Props> = ({ children, transaksi, purpose }) => {
 
   const mobile = useIsMobile();
 
-  const { data, setData, put, post, reset, processing } = useForm({
+  const { data, setData, put, post, processing } = useForm({
     name: transaksi?.name ?? '',
     date: transaksi?.date ?? dayjs().format('YYYY-MM-DD'),
     type: transaksi?.type ?? 'pengeluaran',
@@ -46,7 +46,11 @@ const TransaksiFormSheet: FC<Props> = ({ children, transaksi, purpose }) => {
         preserveScroll: true,
         onSuccess: () => {
           toast.success('Transaksi created successfully');
-          reset();
+          setData('name', '');
+          setData('date', dayjs().format('YYYY-MM-DD'));
+          setData('type', 'pengeluaran');
+          setData('price', '');
+          setData('description', '');
           setOpen(false);
         },
         onError: (e) => toast.error(em(e)),
