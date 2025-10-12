@@ -50,7 +50,7 @@ const TransaksiStatWidget = () => {
     <div className="grid-responsive grid gap-6">
       <Card onClick={() => filterType('pemasukan')} className="cursor-pointer">
         <CardHeader>
-          <CardDescription>Anggaran</CardDescription>
+          <CardDescription>Pemasukan</CardDescription>
           <CardTitle>{formatRupiah(counts?.pemasukan ?? 0)}</CardTitle>
         </CardHeader>
       </Card>
