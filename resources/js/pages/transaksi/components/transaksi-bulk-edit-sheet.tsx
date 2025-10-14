@@ -1,5 +1,6 @@
 import FormControl from '@/components/form-control';
 import SubmitButton from '@/components/submit-button';
+import TagsInput from '@/components/tags-input';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Sheet, SheetClose, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
@@ -18,12 +19,13 @@ type Props = PropsWithChildren & {
 };
 
 const TransaksiBulkEditSheet: FC<Props> = ({ children, transaksiIds, onSuccess }) => {
+  const { projects = [], project } = usePage<SharedData & { projects: Project[]; project: Project }>().props;
+
   const { data, setData, put, processing } = useForm({
     transaksi_ids: transaksiIds,
-    project_id: null as Project['id'] | null,
+    project_id: project.id as Project['id'] | undefined,
+    tags: [] as string[],
   });
-
-  const { projects = [] } = usePage<SharedData & { projects: Project[] }>().props;
 
   useEffect(() => {
     setData('transaksi_ids', transaksiIds);
@@ -48,11 +50,11 @@ const TransaksiBulkEditSheet: FC<Props> = ({ children, transaksiIds, onSuccess }
           <SheetTitle>Ubah transaksi</SheetTitle>
           <SheetDescription>Ubah data {data.transaksi_ids.length} transaksi</SheetDescription>
         </SheetHeader>
-        <div className="px-4">
+        <div className="space-y-4 px-4">
           <FormControl label="Pindah ke project">
             <Select
               value={data.project_id?.toString() || ''}
-              onValueChange={(val) => setData('project_id', val ? parseInt(val) : null)}
+              onValueChange={(val) => setData('project_id', val ? parseInt(val) : undefined)}
               disabled={processing}
             >
               <SelectTrigger>
@@ -66,6 +68,9 @@ const TransaksiBulkEditSheet: FC<Props> = ({ children, transaksiIds, onSuccess }
                 ))}
               </SelectContent>
             </Select>
+          </FormControl>
+          <FormControl label="Tags">
+            <TagsInput value={data.tags} onValueChange={(value) => setData('tags', value)} />
           </FormControl>
         </div>
         <SheetFooter>

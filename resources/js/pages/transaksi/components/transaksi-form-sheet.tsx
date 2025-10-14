@@ -105,7 +105,7 @@ const TransaksiFormSheet: FC<Props> = ({ children, transaksi, purpose }) => {
             <FormControl label="Deskripsi transaksi">
               <Textarea placeholder="Deskripsi" value={data.description} onChange={(e) => setData('description', e.target.value)} />
             </FormControl>
-            <FormControl label="Deskripsi transaksi">
+            <FormControl label="Tags">
               <TagsInput value={data.tags} onValueChange={(value) => setData('tags', value)} />
             </FormControl>
           </div>

@@ -25,6 +25,8 @@ class BulkUpdateTransaksiRequest extends FormRequest
             'transaksi_ids' => 'required|array',
             'transaksi_ids.*' => 'exists:transaksis,id',
             'project_id' => 'nullable|exists:projects,id',
+            'tags' => 'nullable|array',
+            'tags.*' => 'string',
         ];
     }
 }
