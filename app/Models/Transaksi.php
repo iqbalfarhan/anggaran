@@ -21,6 +21,7 @@ class Transaksi extends Model implements HasMedia
         'name',
         'date',
         'type',
+        'tags',
         'price',
         'description'
         'project_id',
@@ -36,6 +37,7 @@ class Transaksi extends Model implements HasMedia
     public $casts = [
         'date' => 'date:Y-m-d',
         'price' => 'integer',
+        'tags' => 'array',
     ];
 
     public static $types = [

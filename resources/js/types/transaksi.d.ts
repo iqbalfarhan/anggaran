@@ -7,6 +7,7 @@ export type Transaksi = {
   date: string;
   type: string;
   price: number;
+  tags: string[];
   media: Media[];
   project_id: Project['id'];
   project: Project;

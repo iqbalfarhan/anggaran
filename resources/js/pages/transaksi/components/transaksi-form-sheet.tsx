@@ -2,6 +2,7 @@ import DatePicker from '@/components/date-picker';
 import FormControl from '@/components/form-control';
 import MoneyInput from '@/components/money-input';
 import SubmitButton from '@/components/submit-button';
+import TagsInput from '@/components/tags-input';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -36,6 +37,7 @@ const TransaksiFormSheet: FC<Props> = ({ children, transaksi, purpose }) => {
     date: transaksi?.date ?? dayjs().format('YYYY-MM-DD'),
     type: transaksi?.type ?? 'pengeluaran',
     price: transaksi?.price ?? '',
+    tags: transaksi?.tags ?? [],
     project_id: transaksi?.project_id ?? project.id ?? '',
     description: transaksi?.description ?? '',
   });
@@ -102,6 +104,9 @@ const TransaksiFormSheet: FC<Props> = ({ children, transaksi, purpose }) => {
             </FormControl>
             <FormControl label="Deskripsi transaksi">
               <Textarea placeholder="Deskripsi" value={data.description} onChange={(e) => setData('description', e.target.value)} />
+            </FormControl>
+            <FormControl label="Deskripsi transaksi">
+              <TagsInput value={data.tags} onValueChange={(value) => setData('tags', value)} />
             </FormControl>
           </div>
         </ScrollArea>

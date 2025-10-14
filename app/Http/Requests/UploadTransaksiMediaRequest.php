@@ -14,7 +14,7 @@ class UploadTransaksiMediaRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'file' => 'required|file|mimes:jpg,jpeg,png|max:2048',
+            'file' => 'required|file|mimes:jpg,jpeg,png|max:20480',
         ];
     }
 }

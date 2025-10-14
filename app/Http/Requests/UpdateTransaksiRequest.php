@@ -18,6 +18,8 @@ class UpdateTransaksiRequest extends FormRequest
             'date' => 'nullable',
             'type' => 'required|string|max:255',
             'price' => 'required|numeric',
+            'tags' => 'nullable|array',
+            'tags.*' => 'string',
             'description' => 'required|string',
         ];
     }

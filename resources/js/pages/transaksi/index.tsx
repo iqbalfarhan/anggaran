@@ -1,5 +1,6 @@
 import HeadingSmall from '@/components/heading-small';
 import MarkdownReader from '@/components/markdown-reader';
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
@@ -119,6 +120,7 @@ const TransaksiList: FC<Props> = ({ transaksis, project }) => {
                 </Button>
               </TableHead>
               <TableHead>Tanggal</TableHead>
+              <TableHead>Tags</TableHead>
               <TableHead>Kegiatan</TableHead>
               <TableHead>Nominal</TableHead>
               <TableHead className="text-center">Actions</TableHead>
@@ -155,6 +157,11 @@ const TransaksiList: FC<Props> = ({ transaksis, project }) => {
                           </Button>
                         </TableCell>
                         <TableCell>{dateDFY(transaksi.date)}</TableCell>
+                        <TableCell>
+                          {transaksi.tags?.map((item) => (
+                            <Badge>{item}</Badge>
+                          ))}
+                        </TableCell>
                         <TableCell>
                           <Popover>
                             <PopoverTrigger>{strLimit(transaksi.name)}</PopoverTrigger>
