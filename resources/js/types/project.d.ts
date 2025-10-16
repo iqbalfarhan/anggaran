@@ -4,6 +4,7 @@ export type Project = {
   id: number;
   name: string;
   description: string;
+  categories: string[] | null;
   user_id: User['id'];
   user: User;
   counts: Record<string, number>;

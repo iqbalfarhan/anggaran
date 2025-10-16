@@ -17,6 +17,7 @@ class Project extends Model
     protected $fillable = [
         'name',
         'description',
+        'categories,
         'user_id'
     ];
     */
@@ -29,6 +30,10 @@ class Project extends Model
 
     public $appends = [
         'counts',
+    ];
+
+    public $casts = [
+        'categories' => 'array',
     ];
 
     public function user()

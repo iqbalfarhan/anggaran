@@ -1,6 +1,6 @@
 import FormControl from '@/components/form-control';
+import RadioInput from '@/components/radio-input';
 import SubmitButton from '@/components/submit-button';
-import TagsInput from '@/components/tags-input';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Sheet, SheetClose, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
@@ -70,7 +70,7 @@ const TransaksiBulkEditSheet: FC<Props> = ({ children, transaksiIds, onSuccess }
             </Select>
           </FormControl>
           <FormControl label="Tags">
-            <TagsInput value={data.tags} onValueChange={(value) => setData('tags', value)} />
+            <RadioInput value={data.tags[0]} onValueChange={(value) => setData('tags', [value])} options={project.categories ?? []} />
           </FormControl>
         </div>
         <SheetFooter>

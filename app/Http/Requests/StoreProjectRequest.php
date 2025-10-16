@@ -17,6 +17,8 @@ class StoreProjectRequest extends FormRequest
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'user_id' => 'nullable',
+            'categories' => 'nullable|array',
+            'categories.*' => 'string',
         ];
     }
 }

@@ -1,5 +1,6 @@
 import FormControl from '@/components/form-control';
 import SubmitButton from '@/components/submit-button';
+import TagsInput from '@/components/tags-input';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -27,6 +28,7 @@ const ProjectFormSheet: FC<Props> = ({ children, project, purpose }) => {
   const { data, setData, put, post, reset, processing } = useForm({
     name: project?.name ?? '',
     description: project?.description ?? '',
+    categories: project?.categories ?? ([] as string[]),
   });
 
   const handleSubmit = () => {
@@ -73,6 +75,9 @@ const ProjectFormSheet: FC<Props> = ({ children, project, purpose }) => {
             </FormControl>
             <FormControl label="Deskripsi">
               <Textarea placeholder="Description" value={data.description} onChange={(e) => setData('description', e.target.value)} />
+            </FormControl>
+            <FormControl label="Deskripsi">
+              <TagsInput value={data.categories} onValueChange={(data) => setData('categories', data)} />
             </FormControl>
           </form>
         </ScrollArea>

@@ -21,7 +21,6 @@ class ProjectController extends Controller
 
         $data = Project::query()
             ->with(['user'])
-            ->whereUserId($this->user->id)
             ->when($request->name, function ($q, $v) {
                 $q->where('name', $v);
             });

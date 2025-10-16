@@ -134,7 +134,7 @@ const TransaksiList: FC<Props> = ({ transaksis, project }) => {
                 return (
                   <>
                     <TableRow key={date} className="bg-muted/50">
-                      <TableCell colSpan={5} className="text-center opacity-50">
+                      <TableCell colSpan={6} className="text-center opacity-50">
                         {dayjs(date).format('dddd, DD MMMM YYYY')}
                       </TableCell>
                     </TableRow>
@@ -210,9 +210,9 @@ const TransaksiList: FC<Props> = ({ transaksis, project }) => {
                     ))}
                     {filteredItems.length > 0 && (
                       <TableRow className="bg-muted/30">
-                        <TableCell colSpan={3} />
+                        <TableCell colSpan={4} />
                         <TableCell className="font-semibold">{formatRupiah(totalPerDay)}</TableCell>
-                        <TableCell className="text-center opacity-70">Total hari ini</TableCell>
+                        <TableCell className="text-center opacity-70">Total {filteredItems.length}</TableCell>
                       </TableRow>
                     )}
                   </>
