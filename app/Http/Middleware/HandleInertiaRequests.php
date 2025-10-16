@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Project;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
@@ -50,7 +51,7 @@ class HandleInertiaRequests extends Middleware
                 'user' => $request->user(),
                 'roles' => $request->user()?->getRoleNames(),
             ],
-            'owned' => $user?->projects?->pluck('name', 'id')->toArray(),
+            'owned' => $user ? Project::pluck('name', 'id')->toArray() : [],
             'menus' => [
                 'user' => $user?->can('menu user'),
                 'role' => $user?->can('menu role'),

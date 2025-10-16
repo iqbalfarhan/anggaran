@@ -10,7 +10,7 @@ class DashboardController extends Controller
     public function index()
     {
         return Inertia::render('dashboard/index', [
-            'projects' => Project::with(['user'])->owned()->get(),
+            'projects' => Project::with(['user'])->get(),
         ]);
     }
 
