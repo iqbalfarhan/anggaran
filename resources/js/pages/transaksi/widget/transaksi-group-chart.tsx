@@ -38,14 +38,15 @@ const TransaksiGroupChart = () => {
     };
   }, {});
 
-  const totalCount = transaksis.length;
-  const chartData = Object.entries(groupBy(transaksis, 'tags')).map(([tag, item]) => {
-    const count = item.length;
-    const percentage = (count / totalCount) * 100;
+  // const totalCount = transaksis.length;
+  const totalPrice = transaksis.reduce((sum, t) => sum + (t.price || 0), 0);
+  const chartData = Object.entries(groupBy(transaksis, 'tags')).map(([tag, items]) => {
+    const groupTotal = items.reduce((sum, t) => sum + (t.price || 0), 0);
+    const percentage = (groupTotal / totalPrice) * 100;
 
     return {
       tag: tag,
-      count: count,
+      count: groupTotal,
       percent: `${percentage.toFixed()}%`,
       fill: chartConfig[tag]?.color,
     };
@@ -57,7 +58,7 @@ const TransaksiGroupChart = () => {
         <ChartContainer config={chartConfig} className="mx-auto aspect-square max-h-[300px] [&_.recharts-text]:fill-background">
           <PieChart>
             <ChartTooltip content={<ChartTooltipContent nameKey="tag" />} />
-            <Pie data={chartData} dataKey="count" nameKey={'tags'}>
+            <Pie data={chartData} dataKey="count" nameKey={'tags'} format={'percent'}>
               <LabelList dataKey="percent" className="fill-background" stroke={'transparent'} fontSize={12} />
             </Pie>
             <ChartLegend content={<ChartLegendContent nameKey="tag" />} className="-translate-y-2 flex-wrap gap-2 *:basis-1/4 *:justify-center" />

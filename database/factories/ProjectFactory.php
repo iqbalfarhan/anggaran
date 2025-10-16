@@ -16,6 +16,7 @@ class ProjectFactory extends Factory
             'name' => fake()->sentence(),
             'description' => fake()->paragraph(),
             'user_id' => User::pluck('id')->random(),
+            'categories' => fake()->words(3),
         ];
     }
 }
