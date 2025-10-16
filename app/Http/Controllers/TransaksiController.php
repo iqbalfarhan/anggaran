@@ -68,6 +68,7 @@ class TransaksiController extends Controller
 
         return Inertia::render('transaksi/show', [
             'transaksi' => $transaksi->load(['media']),
+            'projects' => $transaksi->project,
             'permissions' => [
                 'canUpdate' => $this->user->can('update transaksi'),
                 'canDelete' => $this->user->can('delete transaksi'),
